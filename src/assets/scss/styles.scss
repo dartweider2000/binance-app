@@ -1,0 +1,10 @@
+@tailwind base;
+
+@import "./variables.scss";
+
+html,
+body {
+  @apply min-h-full;
+}
+
+$mini-mobile-br: 500px;
