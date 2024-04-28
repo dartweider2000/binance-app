@@ -19,7 +19,7 @@
     v-model="value"
     :items="items"
     variant="solo-filled"
-    :readonly="deadLock"
+    :disabled="deadLock"
   />
 </template>
 

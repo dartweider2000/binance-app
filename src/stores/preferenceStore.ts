@@ -24,19 +24,39 @@ export const usePreferenceStore = defineStore("preferenceStore", () => {
 
   const { getOrderBookSnapshot } = useOrderBookStore();
 
-  watch(selectedSymbolValue, (value: string, oldValue: string) => {
-    addLog({
-      from: oldValue,
-      to: value,
-      date: Date.now(),
-    });
+  const lockSelect = ref<boolean>(false);
 
-    // Делаю снимок стакана + подписка на WebSocket
-    getOrderBookSnapshot();
+  watch(
+    selectedSymbolValue,
+    async (value: string, oldValue?: string) => {
+      try {
+        lockSelect.value = true;
 
-    // Выполняем функцию после изменения DOM дерева
-    nextTick(() => scrollLogListToLastElement());
-  });
+        if (oldValue !== undefined)
+          addLog({
+            from: oldValue,
+            to: value,
+            date: Date.now(),
+          });
+
+        // Делаю снимок стакана + подписка на WebSocket
+        await getOrderBookSnapshot(value);
+        lockSelect.value = false;
+
+        // Выполняем функцию после изменения DOM дерева
+        nextTick(() => scrollLogListToLastElement());
+      } catch (e) {
+        if (logList.value.length) {
+          logList.value.pop();
+        }
+
+        console.log((e as Error).message);
+      } finally {
+        lockSelect.value = false;
+      }
+    },
+    { immediate: true },
+  );
 
   return {
     symbolList,
@@ -44,5 +64,6 @@ export const usePreferenceStore = defineStore("preferenceStore", () => {
     logList,
     addLog,
     scrollLogListToLastElement,
+    lockSelect,
   };
 });

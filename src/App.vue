@@ -1,13 +1,9 @@
 <script setup lang="ts">
   import NavHeader from "@/components/NavHeader.vue";
-  import { useOrderBookStore } from "@/stores/orderBookStore";
   import { useVariablesStore } from "@/stores/variablesStore";
   import { storeToRefs } from "pinia";
 
-  const { getOrderBookSnapshot } = useOrderBookStore();
   const { routeTransitionName } = storeToRefs(useVariablesStore());
-
-  getOrderBookSnapshot();
 </script>
 
 <template>

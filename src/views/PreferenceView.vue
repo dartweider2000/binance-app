@@ -10,7 +10,8 @@
   import { storeToRefs } from "pinia";
   import { nextTick, onMounted, onUnmounted, ref } from "vue";
 
-  const { selectedSymbolValue, symbolList } = storeToRefs(usePreferenceStore());
+  const { selectedSymbolValue, symbolList, lockSelect } =
+    storeToRefs(usePreferenceStore());
   const { scrollLogListToLastElement } = usePreferenceStore();
   const { establishWebSocketConnection } = storeToRefs(useApiStore());
 
@@ -57,7 +58,7 @@
       v-model="selectedSymbolValue"
       class="preference__select"
       :items="symbolList"
-      :dead-lock="establishWebSocketConnection"
+      :dead-lock="establishWebSocketConnection || lockSelect"
     />
     <SymbolChangeLogList class="preference__list" />
   </div>

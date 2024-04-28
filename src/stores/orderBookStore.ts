@@ -2,7 +2,6 @@ import type { IDepthTableRow, IOption, ITableHeader } from "@/types";
 import { defineStore, storeToRefs } from "pinia";
 import { ref } from "vue";
 import { useApiStore } from "@/stores/apiStore";
-import { usePreferenceStore } from "@/stores/preferenceStore";
 import { useWebSocketMessageHandler } from "@/composables/useWebSocketMessageHandler";
 import { useVariablesStore } from "@/stores/variablesStore";
 
@@ -69,11 +68,9 @@ export const useOrderBookStore = defineStore("orderBookStore", () => {
     );
 
   // Делаю снимок стакана по REST, преобразую данные и подписываюсь на обновление стакана по WebSocket
-  const getOrderBookSnapshot = async () => {
-    const { selectedSymbolValue } = storeToRefs(usePreferenceStore());
-
+  const getOrderBookSnapshot = async (symbol: string) => {
     const { asks, bids, lastUpdateId } = await getDepthSnapshot(
-      selectedSymbolValue.value,
+      symbol,
       selectedTableElementsCount.value,
     );
 
@@ -82,10 +79,7 @@ export const useOrderBookStore = defineStore("orderBookStore", () => {
     askOrderList.value = fromTupleArrayToObjArray(asks);
     bidOrderList.value = fromTupleArrayToObjArray(bids);
 
-    startDepthWebSocketConnection(
-      selectedSymbolValue.value,
-      depthWebSocketMessageHandler,
-    );
+    startDepthWebSocketConnection(symbol, depthWebSocketMessageHandler);
   };
 
   return {
