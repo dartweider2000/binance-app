@@ -24,7 +24,6 @@ export const useApiStore = defineStore("apiStore", () => {
 
   const closeDepthWebSocketConnection = () => {
     clearTimeout(timeout.value);
-    establishWebSocketConnection.value = false;
     depthWebSocket.value?.close();
   };
 
