@@ -9,7 +9,7 @@ export interface ILog {
   date: number;
 }
 
-export type SelectOption = string | IOption;
+export type SelectOption = string | IOption | number;
 
 export interface IComponentHtmlRef {
   $el: HTMLElement;

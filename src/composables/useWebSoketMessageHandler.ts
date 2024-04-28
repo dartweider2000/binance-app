@@ -1,4 +1,6 @@
+import { useOrderBookStore } from "@/stores/orderBookStore";
 import type { IDepthTableRow, IDepthWebSocketResponse, Order } from "@/types";
+import { storeToRefs } from "pinia";
 import type { Ref } from "vue";
 
 export const useWebSocketMessageHandler = (
@@ -28,8 +30,11 @@ export const useWebSocketMessageHandler = (
   };
 
   // Сокращение массива. Для того, чтобы отсекать старые данные
-  const truncateArray = (list: any[], size: number = 10) => {
-    list.length = size;
+  const truncateArray = (list: any[]) => {
+    const { selectedTableElementsCount } = storeToRefs(useOrderBookStore());
+
+    if (selectedTableElementsCount.value < list.length)
+      list.length = selectedTableElementsCount.value;
 
     return list;
   };
@@ -78,6 +83,5 @@ export const useWebSocketMessageHandler = (
   return {
     depthWebSocketMessageHandler,
     fromTupleArrayToObjArray,
-    truncateArray,
   };
 };

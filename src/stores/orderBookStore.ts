@@ -11,8 +11,8 @@ export const useOrderBookStore = defineStore("orderBookStore", () => {
     { title: "500", value: 500 },
     { title: "1000", value: 1000 },
   ]);
-  const selectedTableElementsCount = ref<IOption>(
-    tableElementsCountList.value[0],
+  const selectedTableElementsCount = ref<number>(
+    +tableElementsCountList.value[0].value,
   );
 
   const tableHeaders = ref<ITableHeader[]>([
@@ -57,36 +57,32 @@ export const useOrderBookStore = defineStore("orderBookStore", () => {
   const { getDepthSnapshot, startDepthWebSocketConnection } = useApiStore();
   const localOrderBookLastUpdateId = ref<number | null>(null);
 
-  const {
-    depthWebSocketMessageHandler,
-    fromTupleArrayToObjArray,
-    truncateArray,
-  } = useWebSocketMessageHandler(
-    askOrderList,
-    bidOrderList,
-    localOrderBookLastUpdateId,
-  );
+  // Хук, в котором содержится обработчик события message у WebSocket, а так же вспомогательные функции для обработки данных
+  const { depthWebSocketMessageHandler, fromTupleArrayToObjArray } =
+    useWebSocketMessageHandler(
+      askOrderList,
+      bidOrderList,
+      localOrderBookLastUpdateId,
+    );
 
   // Делаю снимок стакана по REST, преобразую данные и подписываюсь на обновление стакана по WebSocket
   const getOrderBookSnapshot = async () => {
     const { selectedSymbolValue } = storeToRefs(usePreferenceStore());
-    console.log(selectedSymbolValue);
 
     const { asks, bids, lastUpdateId } = await getDepthSnapshot(
       selectedSymbolValue.value,
+      selectedTableElementsCount.value,
     );
 
     localOrderBookLastUpdateId.value = lastUpdateId;
 
-    askOrderList.value = truncateArray(fromTupleArrayToObjArray(asks));
-    bidOrderList.value = truncateArray(fromTupleArrayToObjArray(bids));
+    askOrderList.value = fromTupleArrayToObjArray(asks);
+    bidOrderList.value = fromTupleArrayToObjArray(bids);
 
     startDepthWebSocketConnection(
       selectedSymbolValue.value,
       depthWebSocketMessageHandler,
     );
-
-    console.log(askOrderList.value);
   };
 
   return {
