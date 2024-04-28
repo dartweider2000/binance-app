@@ -19,20 +19,17 @@
 
 <style scoped lang="scss">
   .app {
-    @apply grid gap-[10px] grid-rows-[auto,1fr] min-h-dvh overflow-x-hidden;
-
-    @media (orientation: portrait) {
-      @apply overflow-y-hidden;
-    }
+    @apply grid gap-[10px] grid-rows-[auto,1fr] h-dvh overflow-hidden;
     // .app__header
     &__header {
     }
     // .app__body
     &__body {
+      @apply pb-[10px];
     }
   }
 
   .container {
-    @apply max-w-[1460px] px-[10px];
+    @apply max-w-[920px] px-[10px] m-auto w-full;
   }
 </style>

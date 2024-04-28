@@ -10,3 +10,9 @@ export interface ILog {
 }
 
 export type SelectOption = string | IOption;
+
+export interface IDepth {
+  lastUpdateId: number;
+  bids: Array<[number, number]>;
+  asks: Array<[number, number]>;
+}

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  import { useBinanceStore } from "@/stores/binanceStore";
+  import { usePreferenceStore } from "@/stores/preferenceStore";
   import { storeToRefs } from "pinia";
   import SymbolChangeLog from "@/components/SymbolChangeLog.vue";
 
-  const { logList } = storeToRefs(useBinanceStore());
+  const { logList } = storeToRefs(usePreferenceStore());
 </script>
 
 <template>
@@ -20,4 +20,11 @@
   </Transition>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+  .log-list {
+    @apply grid gap-[10px];
+  }
+  .empty {
+    @apply text-center p-[10px];
+  }
+</style>

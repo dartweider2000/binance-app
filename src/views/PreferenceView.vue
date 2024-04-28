@@ -1,15 +1,11 @@
 <script setup lang="ts">
   import SymbolChangeLogList from "@/components/SymbolChangeLogList.vue";
   import MySelect from "@/components/UI/MySelect.vue";
-  import { useBinanceStore } from "@/stores/binanceStore";
+  import { usePreferenceStore } from "@/stores/preferenceStore";
+  import type { IDepth } from "@/types";
   import { storeToRefs } from "pinia";
-  import { watch } from "vue";
 
-  const { selectedSymbolValue, symbolList } = storeToRefs(useBinanceStore());
-
-  watch(selectedSymbolValue, (value: string, oldValue: string) => {
-    console.log(value, oldValue);
-  });
+  const { selectedSymbolValue, symbolList } = storeToRefs(usePreferenceStore());
 </script>
 
 <template>
@@ -19,8 +15,17 @@
       class="preference__select"
       :items="symbolList"
     />
-    <SymbolChangeLogList />
+    <SymbolChangeLogList class="preference__list" />
   </div>
 </template>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+  .preference {
+    // .preference__select
+    &__select {
+    }
+    // .preference__list
+    &__list {
+    }
+  }
+</style>
