@@ -13,6 +13,8 @@ export const usePreferenceStore = defineStore("preferenceStore", () => {
   const addLog = (log: ILog) => logList.value.push(log);
 
   const { logListRef } = storeToRefs(useHtmlElStore());
+
+  // Скролю до последнего элемента в списке логов
   const scrollLogListToLastElement = () => {
     logListRef.value?.scrollTo({
       top: logListRef.value!.scrollHeight,

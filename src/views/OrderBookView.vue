@@ -4,6 +4,7 @@
   import { isFullScreenScroll } from "@/helpers/isFullScreenScroll";
   import { useHtmlElStore } from "@/stores/htmlElStore";
   import { useOrderBookStore } from "@/stores/orderBookStore";
+  import { useVariablesStore } from "@/stores/variablesStore";
   import type { IComponentHtmlRef } from "@/types";
   import { storeToRefs } from "pinia";
   import { onMounted, onUnmounted, ref } from "vue";
@@ -16,7 +17,9 @@
   } = storeToRefs(useOrderBookStore());
 
   const { headerRef } = storeToRefs(useHtmlElStore());
-  const { appBodyPaddingBottom } = useHtmlElStore();
+
+  const { appBodyPaddingBottom } = useVariablesStore();
+  const { tableComponentHeight } = storeToRefs(useVariablesStore());
 
   const selectRef = ref<IComponentHtmlRef | null>(null);
 
@@ -31,10 +34,7 @@
         appBodyPaddingBottom
       }px`;
 
-    document.documentElement.style.setProperty(
-      "--order-book-table-component-height",
-      tableHeight,
-    );
+    tableComponentHeight.value = tableHeight;
   };
 
   onMounted(() => {

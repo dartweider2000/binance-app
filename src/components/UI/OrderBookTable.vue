@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useOrderBookStore } from "@/stores/orderBookStore";
+  import { useVariablesStore } from "@/stores/variablesStore";
   import type { IDepthTableRow } from "@/types";
   import { storeToRefs } from "pinia";
   import { onMounted, ref } from "vue";
@@ -12,11 +13,10 @@
   const { tableHeaders } = storeToRefs(useOrderBookStore());
   const titleRef = ref<HTMLElement | null>(null);
 
+  const { tableTitleHeight } = storeToRefs(useVariablesStore());
+
   onMounted(() => {
-    document.documentElement.style.setProperty(
-      "--order-book-table-title-height",
-      `${titleRef.value?.clientHeight}px`,
-    );
+    tableTitleHeight.value = titleRef.value!.clientHeight.toString();
   });
 </script>
 
@@ -41,8 +41,6 @@
     }
     // .table__el
     &__el {
-      // @apply pb-[10px];
-
       height: calc(
         var(--order-book-table-component-height) - var(
             --order-book-table-title-height

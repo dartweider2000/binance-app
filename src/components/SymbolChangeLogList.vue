@@ -34,7 +34,7 @@
     }
     // .log-list__empty
     &__empty {
-      @apply text-center p-[10px];
+      @apply text-center p-[10px] text-[22px] font-medium;
     }
   }
 

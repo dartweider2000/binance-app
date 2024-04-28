@@ -5,6 +5,7 @@
   import { useApiStore } from "@/stores/apiStore";
   import { useHtmlElStore } from "@/stores/htmlElStore";
   import { usePreferenceStore } from "@/stores/preferenceStore";
+  import { useVariablesStore } from "@/stores/variablesStore";
   import type { IComponentHtmlRef } from "@/types";
   import { storeToRefs } from "pinia";
   import { nextTick, onMounted, onUnmounted, ref } from "vue";
@@ -14,15 +15,17 @@
   const { establishWebSocketConnection } = storeToRefs(useApiStore());
 
   const { headerRef } = storeToRefs(useHtmlElStore());
-  const { appBodyPaddingBottom } = useHtmlElStore();
+
+  const { appBodyPaddingBottom } = useVariablesStore();
+  const { logListHeight } = storeToRefs(useVariablesStore());
 
   const selectRef = ref<IComponentHtmlRef | null>(null);
 
   const resizeHandler = () => {
-    let logListHeight = "auto";
+    let _logListHeight = "auto";
 
     if (isFullScreenScroll()) {
-      logListHeight = `${
+      _logListHeight = `${
         window.innerHeight -
         headerRef.value!.clientHeight -
         selectRef.value!.$el.clientHeight -
@@ -32,10 +35,7 @@
       nextTick(() => scrollLogListToLastElement());
     }
 
-    document.documentElement.style.setProperty(
-      "--log-list-height",
-      logListHeight,
-    );
+    logListHeight.value = _logListHeight;
   };
 
   onMounted(() => {

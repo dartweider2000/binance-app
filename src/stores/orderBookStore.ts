@@ -3,7 +3,8 @@ import { defineStore, storeToRefs } from "pinia";
 import { ref } from "vue";
 import { useApiStore } from "@/stores/apiStore";
 import { usePreferenceStore } from "@/stores/preferenceStore";
-import { useWebSocketMessageHandler } from "@/composables/useWebSoketMessageHandler";
+import { useWebSocketMessageHandler } from "@/composables/useWebSocketMessageHandler";
+import { useVariablesStore } from "@/stores/variablesStore";
 
 export const useOrderBookStore = defineStore("orderBookStore", () => {
   const tableElementsCountList = ref<IOption[]>([
@@ -36,9 +37,8 @@ export const useOrderBookStore = defineStore("orderBookStore", () => {
 
   // Зона отвечает за то, чтобы на мобильном разрешении убирать лишний столбец и добавлять его на десктопе
 
-  const mathMedia = matchMedia(
-    `(max-width: ${window.getComputedStyle(document.documentElement).getPropertyValue("--mobile-br")})`,
-  );
+  const { mobileBr } = useVariablesStore();
+  const mathMedia = matchMedia(`(max-width: ${mobileBr})`);
 
   const mathMediaChangeHandler = () => {
     if (mathMedia.matches) {
