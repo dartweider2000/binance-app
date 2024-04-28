@@ -1,7 +1,4 @@
-const thresholdHeight = parseInt(
-  window
-    .getComputedStyle(document.documentElement)
-    .getPropertyValue("--scroll-threshold-height"),
-);
+import { useHtmlElStore } from "@/stores/htmlElStore";
+const { thresholdHeight } = useHtmlElStore();
 
 export const isFullScreenScroll = () => window.innerHeight > thresholdHeight;

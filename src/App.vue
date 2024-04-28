@@ -25,7 +25,7 @@
     }
     // .app__body
     &__body {
-      // @apply pb-[10px];
+      @apply pb-[--app-body-padding-bottom];
     }
   }
 

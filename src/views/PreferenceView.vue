@@ -1,26 +1,50 @@
 <script setup lang="ts">
   import SymbolChangeLogList from "@/components/SymbolChangeLogList.vue";
   import MySelect from "@/components/UI/MySelect.vue";
+  import { isFullScreenScroll } from "@/helpers/isFullScreenScroll";
   import { useHtmlElStore } from "@/stores/htmlElStore";
   import { usePreferenceStore } from "@/stores/preferenceStore";
   import type { IComponentHtmlRef } from "@/types";
   import { storeToRefs } from "pinia";
-  import { onMounted, onUnmounted, ref } from "vue";
+  import { nextTick, onMounted, onUnmounted, ref } from "vue";
 
   const { selectedSymbolValue, symbolList } = storeToRefs(usePreferenceStore());
   const { scrollLogListToLastElement } = usePreferenceStore();
-  const { preferenceSelectRef } = storeToRefs(useHtmlElStore());
+
+  const { headerRef } = storeToRefs(useHtmlElStore());
+  const { appBodyPaddingBottom } = useHtmlElStore();
 
   const selectRef = ref<IComponentHtmlRef | null>(null);
 
+  const resizeHandler = () => {
+    let logListHeight = "auto";
+
+    if (isFullScreenScroll()) {
+      logListHeight = `${
+        window.innerHeight -
+        headerRef.value!.clientHeight -
+        selectRef.value!.$el.clientHeight -
+        appBodyPaddingBottom
+      }px`;
+
+      nextTick(() => scrollLogListToLastElement());
+    }
+
+    document.documentElement.style.setProperty(
+      "--log-list-height",
+      logListHeight,
+    );
+  };
+
   onMounted(() => {
-    preferenceSelectRef.value = selectRef.value!.$el;
+    resizeHandler();
+    window.addEventListener("resize", resizeHandler);
 
     scrollLogListToLastElement();
   });
 
   onUnmounted(() => {
-    preferenceSelectRef.value = null;
+    window.removeEventListener("resize", resizeHandler);
   });
 </script>
 

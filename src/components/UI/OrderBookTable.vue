@@ -41,7 +41,7 @@
     }
     // .table__el
     &__el {
-      @apply pb-[10px];
+      // @apply pb-[10px];
 
       height: calc(
         var(--order-book-table-component-height) - var(

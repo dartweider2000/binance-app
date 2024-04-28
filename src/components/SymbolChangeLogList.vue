@@ -2,40 +2,10 @@
   import { usePreferenceStore } from "@/stores/preferenceStore";
   import { storeToRefs } from "pinia";
   import SymbolChangeLog from "@/components/SymbolChangeLog.vue";
-  import { nextTick, onMounted, onUnmounted, ref } from "vue";
   import { useHtmlElStore } from "@/stores/htmlElStore";
-  import { isFullScreenScroll } from "@/helpers/isFullScreenScroll";
 
   const { logList } = storeToRefs(usePreferenceStore());
-
-  const { headerRef, preferenceSelectRef, logListRef } =
-    storeToRefs(useHtmlElStore());
-
-  const resizeHandler = () => {
-    let logListHeight = "auto";
-
-    if (isFullScreenScroll())
-      logListHeight = `${
-        window.innerHeight -
-        headerRef.value!.clientHeight -
-        preferenceSelectRef.value!.clientHeight
-      }px`;
-
-    document.documentElement.style.setProperty(
-      "--log-list-height",
-      logListHeight,
-    );
-  };
-
-  onMounted(() => {
-    nextTick(() => resizeHandler());
-    window.addEventListener("resize", resizeHandler);
-  });
-
-  onUnmounted(() => {
-    window.removeEventListener("resize", resizeHandler);
-    logListRef.value = null;
-  });
+  const { logListRef } = storeToRefs(useHtmlElStore());
 </script>
 
 <template>
@@ -56,7 +26,7 @@
 
 <style scoped lang="scss">
   .log-list {
-    @apply h-[--log-list-height] overflow-y-auto overflow-x-hidden px-[6px] mx-[-6px] pb-[10px] pt-[1px] mt-[-1px];
+    @apply h-[--log-list-height] overflow-y-auto overflow-x-hidden p-[3px] m-[-3px] pt-[1px] mt-[-1px];
     // .log-list__el
     &__el {
       @apply grid gap-[10px];

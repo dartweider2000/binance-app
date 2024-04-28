@@ -57,6 +57,14 @@ export const useOrderBookStore = defineStore("orderBookStore", () => {
     { price: 100, quantity: 50, total: 30 },
     { price: 100, quantity: 50, total: 30 },
     { price: 100, quantity: 50, total: 30 },
+    { price: 100, quantity: 50, total: 30 },
+    { price: 100, quantity: 50, total: 30 },
+    { price: 100, quantity: 50, total: 30 },
+    { price: 100, quantity: 50, total: 30 },
+    { price: 100, quantity: 50, total: 30 },
+    { price: 100, quantity: 50, total: 30 },
+    { price: 100, quantity: 50, total: 30 },
+    { price: 100, quantity: 50, total: 30 },
   ]);
 
   const orderBook = ref();

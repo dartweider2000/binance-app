@@ -12,6 +12,7 @@
     storeToRefs(useOrderBookStore());
 
   const { headerRef } = storeToRefs(useHtmlElStore());
+  const { appBodyPaddingBottom } = useHtmlElStore();
 
   const selectRef = ref<IComponentHtmlRef | null>(null);
 
@@ -22,7 +23,8 @@
       tableHeight = `${
         window.innerHeight -
         headerRef.value!.clientHeight -
-        selectRef.value!.$el.clientHeight
+        selectRef.value!.$el.clientHeight -
+        appBodyPaddingBottom
       }px`;
 
     document.documentElement.style.setProperty(
