@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import MySelect from "@/components/UI/MySelect.vue";
   import OrderBookTable from "@/components/UI/OrderBookTable.vue";
+  import { isFullScreenScroll } from "@/helpers/isFullScreenScroll";
   import { useHtmlElStore } from "@/stores/htmlElStore";
   import { useOrderBookStore } from "@/stores/orderBookStore";
   import type { IComponentHtmlRef } from "@/types";
@@ -15,14 +16,18 @@
   const selectRef = ref<IComponentHtmlRef | null>(null);
 
   const resizeHandler = () => {
-    const tableHeight =
-      window.innerHeight -
-      headerRef.value!.clientHeight -
-      selectRef.value!.$el.clientHeight;
+    let tableHeight = "auto";
+
+    if (isFullScreenScroll())
+      tableHeight = `${
+        window.innerHeight -
+        headerRef.value!.clientHeight -
+        selectRef.value!.$el.clientHeight
+      }px`;
 
     document.documentElement.style.setProperty(
       "--order-book-table-component-height",
-      `${tableHeight}px`,
+      tableHeight,
     );
   };
 

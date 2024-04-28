@@ -21,11 +21,32 @@ export const useOrderBookStore = defineStore("orderBookStore", () => {
       title: "Quantity",
       key: "quantity",
     },
-    {
-      title: "Total",
-      key: "total",
-    },
   ]);
+
+  const totalHeader: ITableHeader = {
+    title: "Total",
+    key: "total",
+  };
+
+  // Зона отвечает за то, чтобы на мобильном разрешении убирать лишний столбец и добавлять его на десктопе
+
+  const mathMedia = matchMedia(
+    `(max-width: ${window.getComputedStyle(document.documentElement).getPropertyValue("--mobile-br")})`,
+  );
+
+  const mathMediaChangeHandler = () => {
+    if (mathMedia.matches) {
+      if (tableHeaders.value.includes(totalHeader))
+        tableHeaders.value.splice(tableHeaders.value.indexOf(totalHeader), 1);
+    } else {
+      tableHeaders.value.push(totalHeader);
+    }
+  };
+
+  mathMediaChangeHandler();
+  mathMedia.addEventListener("change", mathMediaChangeHandler);
+
+  //
 
   const bidOrderList = ref<IDepthTableRow[]>([
     { price: 100, quantity: 50, total: 30 },

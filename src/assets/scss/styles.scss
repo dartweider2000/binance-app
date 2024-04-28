@@ -5,10 +5,4 @@
 html,
 body {
   @apply min-h-full overflow-x-hidden;
-
-  @media (orientation: portrait) {
-    @apply overflow-y-hidden;
-  }
 }
-
-$mini-mobile-br: 500px;

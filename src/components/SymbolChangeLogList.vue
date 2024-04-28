@@ -4,7 +4,7 @@
   import SymbolChangeLog from "@/components/SymbolChangeLog.vue";
   import { nextTick, onMounted, onUnmounted, ref } from "vue";
   import { useHtmlElStore } from "@/stores/htmlElStore";
-  import { isPortrait } from "@/helpers/isPortrait";
+  import { isFullScreenScroll } from "@/helpers/isFullScreenScroll";
 
   const { logList } = storeToRefs(usePreferenceStore());
 
@@ -14,7 +14,7 @@
   const resizeHandler = () => {
     let logListHeight = "auto";
 
-    if (isPortrait())
+    if (isFullScreenScroll())
       logListHeight = `${
         window.innerHeight -
         headerRef.value!.clientHeight -

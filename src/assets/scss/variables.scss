@@ -4,7 +4,11 @@
 
   --log-list-height: auto;
   --order-book-table-component-height: auto;
-  --order-book-table-title-height: auto.;
+  --order-book-table-title-height: auto;
+
+  --mobile-br: 768px;
+  --scroll-threshold-height: 450px;
 }
 
 $mini-mobile-br: 500px;
+$mobile-br: 768px;
