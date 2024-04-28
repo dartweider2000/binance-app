@@ -19,16 +19,19 @@ export const useOrderBookStore = defineStore("orderBookStore", () => {
     {
       title: "Price",
       key: "price",
+      align: "start",
     },
     {
       title: "Quantity",
       key: "quantity",
+      align: "end",
     },
   ]);
 
   const totalHeader: ITableHeader = {
     title: "Total",
     key: "total",
+    align: "end",
   };
 
   // Зона отвечает за то, чтобы на мобильном разрешении убирать лишний столбец и добавлять его на десктопе
