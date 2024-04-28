@@ -1,5 +1,10 @@
 <script setup lang="ts">
   import NavHeader from "@/components/NavHeader.vue";
+  import { useOrderBookStore } from "./stores/orderBookStore";
+
+  const { getOrderBookSnapshot } = useOrderBookStore();
+
+  getOrderBookSnapshot();
 </script>
 
 <template>

@@ -2,6 +2,7 @@
   import SymbolChangeLogList from "@/components/SymbolChangeLogList.vue";
   import MySelect from "@/components/UI/MySelect.vue";
   import { isFullScreenScroll } from "@/helpers/isFullScreenScroll";
+  import { useApiStore } from "@/stores/apiStore";
   import { useHtmlElStore } from "@/stores/htmlElStore";
   import { usePreferenceStore } from "@/stores/preferenceStore";
   import type { IComponentHtmlRef } from "@/types";
@@ -10,6 +11,7 @@
 
   const { selectedSymbolValue, symbolList } = storeToRefs(usePreferenceStore());
   const { scrollLogListToLastElement } = usePreferenceStore();
+  const { establishWebSocketConnection } = storeToRefs(useApiStore());
 
   const { headerRef } = storeToRefs(useHtmlElStore());
   const { appBodyPaddingBottom } = useHtmlElStore();
@@ -55,6 +57,7 @@
       v-model="selectedSymbolValue"
       class="preference__select"
       :items="symbolList"
+      :dead-lock="establishWebSocketConnection"
     />
     <SymbolChangeLogList class="preference__list" />
   </div>

@@ -16,8 +16,6 @@ export const useHtmlElStore = defineStore("htmlElStore", () => {
     computedStyles.getPropertyValue("--scroll-threshold-height"),
   );
 
-  console.log(appBodyPaddingBottom, thresholdHeight);
-
   return {
     headerRef,
     preferenceSelectRef,

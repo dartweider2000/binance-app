@@ -1,6 +1,9 @@
 import type { IDepthTableRow, IOption, ITableHeader } from "@/types";
-import { defineStore } from "pinia";
+import { defineStore, storeToRefs } from "pinia";
 import { ref } from "vue";
+import { useApiStore } from "@/stores/apiStore";
+import { usePreferenceStore } from "@/stores/preferenceStore";
+import { useWebSocketMessageHandler } from "@/composables/useWebSoketMessageHandler";
 
 export const useOrderBookStore = defineStore("orderBookStore", () => {
   const tableElementsCountList = ref<IOption[]>([
@@ -48,33 +51,50 @@ export const useOrderBookStore = defineStore("orderBookStore", () => {
 
   //
 
-  const bidOrderList = ref<IDepthTableRow[]>([
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-    { price: 100, quantity: 50, total: 30 },
-  ]);
+  const bidOrderList = ref<IDepthTableRow[]>([]);
+  const askOrderList = ref<IDepthTableRow[]>([]);
 
-  const orderBook = ref();
+  const { getDepthSnapshot, startDepthWebSocketConnection } = useApiStore();
+  const localOrderBookLastUpdateId = ref<number | null>(null);
 
-  const lastUpdateId = ref<number | null>(null);
+  const {
+    depthWebSocketMessageHandler,
+    fromTupleArrayToObjArray,
+    truncateArray,
+  } = useWebSocketMessageHandler(
+    askOrderList,
+    bidOrderList,
+    localOrderBookLastUpdateId,
+  );
+
+  // Делаю снимок стакана по REST, преобразую данные и подписываюсь на обновление стакана по WebSocket
+  const getOrderBookSnapshot = async () => {
+    const { selectedSymbolValue } = storeToRefs(usePreferenceStore());
+    console.log(selectedSymbolValue);
+
+    const { asks, bids, lastUpdateId } = await getDepthSnapshot(
+      selectedSymbolValue.value,
+    );
+
+    localOrderBookLastUpdateId.value = lastUpdateId;
+
+    askOrderList.value = truncateArray(fromTupleArrayToObjArray(asks));
+    bidOrderList.value = truncateArray(fromTupleArrayToObjArray(bids));
+
+    startDepthWebSocketConnection(
+      selectedSymbolValue.value,
+      depthWebSocketMessageHandler,
+    );
+
+    console.log(askOrderList.value);
+  };
 
   return {
     tableElementsCountList,
     selectedTableElementsCount,
     bidOrderList,
+    askOrderList,
     tableHeaders,
+    getOrderBookSnapshot,
   };
 });

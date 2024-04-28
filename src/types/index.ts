@@ -21,7 +21,7 @@ export interface ITableHeader {
   align?: "end" | "start" | "center";
 }
 
-export type Order = [number, number];
+export type Order = [string, string];
 
 export interface IDepthRestResponse {
   lastUpdateId: number;

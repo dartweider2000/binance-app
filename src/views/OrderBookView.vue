@@ -8,8 +8,12 @@
   import { storeToRefs } from "pinia";
   import { onMounted, onUnmounted, ref } from "vue";
 
-  const { tableElementsCountList, selectedTableElementsCount, bidOrderList } =
-    storeToRefs(useOrderBookStore());
+  const {
+    tableElementsCountList,
+    selectedTableElementsCount,
+    bidOrderList,
+    askOrderList,
+  } = storeToRefs(useOrderBookStore());
 
   const { headerRef } = storeToRefs(useHtmlElStore());
   const { appBodyPaddingBottom } = useHtmlElStore();
@@ -53,7 +57,7 @@
     />
     <div class="order-book__table-area">
       <OrderBookTable :data="bidOrderList" title="Bids" />
-      <OrderBookTable :data="bidOrderList" title="Asks" />
+      <OrderBookTable :data="askOrderList" title="Asks" />
     </div>
   </div>
 </template>
