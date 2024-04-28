@@ -16,6 +16,7 @@
         name="group"
         tag="div"
         class="log-list__el"
+        appear
       >
         <SymbolChangeLog v-for="log in logList" :key="log.date" :log="log" />
       </TransitionGroup>
@@ -35,5 +36,24 @@
     &__empty {
       @apply text-center p-[10px];
     }
+  }
+
+  .group-enter-from,
+  .group-leave-to {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  .switch-enter-from,
+  .switch-leave-to {
+    opacity: 0;
+    transform: translate(0, 50px);
+  }
+
+  .group-enter-active,
+  .group-leave-active,
+  .switch-enter-active,
+  .switch-leave-active {
+    transition: all 0.4s ease 0s;
   }
 </style>

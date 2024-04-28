@@ -47,11 +47,11 @@ export const useWebSocketMessageHandler = (
       b: bids,
     }: IDepthWebSocketResponse = JSON.parse(data);
 
-    // Если firstUpdateId + 1 <= localOrderBookLastUpdateId - это значит, что хотя бы часть данных, которые пришли в сообщении, уже есть в
+    // Если firstUpdateId <= localOrderBookLastUpdateId - это значит, что хотя бы часть данных, которые пришли в сообщении, уже есть в
     // нашем локальном стакане
     // Если lastUpdateId <= localOrderBookLastUpdateId, то это значит, что в нашем локальном стакане данные новее, чем в обновлении
     if (
-      firstUpdateId + 1 <= localOrderBookLastUpdateId.value! ||
+      firstUpdateId <= localOrderBookLastUpdateId.value! ||
       lastUpdateId <= localOrderBookLastUpdateId.value!
     )
       return;
