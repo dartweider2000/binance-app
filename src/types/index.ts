@@ -41,3 +41,5 @@ export interface IDepthTableRow {
   quantity: number;
   total: number;
 }
+
+export type RouteTransitionType = "right" | "left";
