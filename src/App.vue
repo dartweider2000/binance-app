@@ -5,8 +5,8 @@
 <template>
   <div class="app">
     <div class="container">
-      <NavHeader class="app__header" />
-      <div class="app__body">
+      <NavHeader ref="headerRef" class="app__header" />
+      <div ref="appBodyRef" class="app__body">
         <RouterView #default="{ Component }">
           <Transition name="view" mode="out-in">
             <component :is="Component" />
@@ -19,13 +19,13 @@
 
 <style scoped lang="scss">
   .app {
-    @apply grid gap-[10px] grid-rows-[auto,1fr] h-dvh overflow-hidden;
+    @apply h-dvh;
     // .app__header
     &__header {
     }
     // .app__body
     &__body {
-      @apply pb-[10px];
+      // @apply pb-[10px];
     }
   }
 

@@ -1,9 +1,13 @@
 <script setup lang="ts">
   import MainLogo from "@/components/icons/MainLogo.vue";
+  import { useHtmlElStore } from "@/stores/htmlElStore";
+  import { storeToRefs } from "pinia";
+
+  const { headerRef } = storeToRefs(useHtmlElStore());
 </script>
 
 <template>
-  <header class="header">
+  <header ref="headerRef" class="header">
     <div class="header__inner">
       <ul class="header__list">
         <li class="header__item">

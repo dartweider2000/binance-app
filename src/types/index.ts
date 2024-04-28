@@ -11,8 +11,33 @@ export interface ILog {
 
 export type SelectOption = string | IOption;
 
-export interface IDepth {
+export interface IComponentHtmlRef {
+  $el: HTMLElement;
+}
+
+export interface ITableHeader {
+  title: string;
+  key: string;
+  align?: "end" | "start" | "center";
+}
+
+export type Order = [number, number];
+
+export interface IDepthRestResponse {
   lastUpdateId: number;
-  bids: Array<[number, number]>;
-  asks: Array<[number, number]>;
+  bids: Order[];
+  asks: Order[];
+}
+
+export interface IDepthWebSocketResponse {
+  U: number;
+  u: number;
+  b: Order[];
+  a: Order[];
+}
+
+export interface IDepthTableRow {
+  price: number;
+  quantity: number;
+  total: number;
 }
